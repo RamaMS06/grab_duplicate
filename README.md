@@ -22,4 +22,23 @@ It is intended for educational and experimental purposes, focusing on scalable a
 
 ---
 
-## Project Structure
+## Tech Stack
+- Language: Kotlin (KMP)
+- UI: Jetpack Compose + Material3
+- Navigation: Compose Navigation
+- Build System: Gradle (KTS)
+- IDE: Android Studio Giraffe or newer
+
+---
+
+## Getting Started
+
+### Prerequisites
+- Android Studio Giraffe or newer  
+- Kotlin 1.9+  
+- JDK 17+  
+
+### Clone the Repository
+```bash
+git clone https://github.com/your-username/grab_duplicate.git
+cd grab_duplicate
