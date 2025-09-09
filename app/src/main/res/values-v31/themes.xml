@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.GrabDuplicates" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Set custom background -->
+        <item name="android:windowSplashScreenBackground">@color/primary</item>
+
+        <!-- Remove the default icon -->
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/transparent</item>
+    </style>
+</resources>
