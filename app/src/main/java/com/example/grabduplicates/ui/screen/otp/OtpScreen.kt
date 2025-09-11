@@ -2,8 +2,16 @@ package com.example.grabduplicates.ui.screen.otp
 
 import RAText
 import android.annotation.SuppressLint
-import android.widget.Space
+import android.util.Log
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.with
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,9 +27,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -30,12 +36,14 @@ import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -54,20 +62,63 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.grabduplicates.R
+import com.example.grabduplicates.navigation.Routes
+import com.example.grabduplicates.ui.components.loading.RALoading
 import com.example.grabduplicates.ui.theme.RAColor
 import kotlinx.coroutines.delay
 
 @Composable
-fun OTPScreen() {
+fun OTPScreen(navController: NavHostController, viewModel: OtpViewModel = viewModel()) {
     Scaffold(
-        modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing)
+        containerColor = RAColor.White,
+        contentWindowInsets = WindowInsets.safeDrawing
     ) { innerPadding ->
-        Box(modifier = Modifier
-            .padding(innerPadding)
-            .padding(12.dp)
-            .fillMaxSize()) {
-            var otpValue by remember { mutableStateOf("") }
+        Box(
+            modifier = Modifier
+                .padding(innerPadding)
+                .padding(12.dp)
+                .fillMaxSize()
+                .background(color = RAColor.White)
+        ) {
+            val otpValue by viewModel.otpValue.collectAsState()
+            val controller = LocalSoftwareKeyboardController.current
+            var isLoadingOtp by remember { mutableStateOf(false) }
+            var isFailure by remember { mutableStateOf(false) }
+            var isSuccess by remember { mutableStateOf(false) }
+            var showClearText by remember { mutableStateOf(false) }
+
+            // Handling Logic
+            LaunchedEffect(isLoadingOtp) {
+                delay(1500)
+                isLoadingOtp = false
+                if (otpValue != "") {
+                    if (otpValue != "123123") {
+                        isFailure = true
+                        viewModel.setOtpValue("")
+                        controller?.show()
+                    } else {
+                        isSuccess = true
+                    }
+                }
+            }
+
+            LaunchedEffect(isSuccess) {
+                delay(1000)
+                if(isSuccess){
+                    navController.navigate(Routes.Splash) {
+                        popUpTo(Routes.Splash) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                }
+            }
+
+            if (isLoadingOtp)
+                RALoading()
 
             Column {
                 Icon(
@@ -95,19 +146,29 @@ fun OTPScreen() {
                     OtpTextField(
                         value = otpValue,
                         onValueChange = { newValue ->
-                            otpValue = newValue
+                            viewModel.setOtpValue(newValue)
+                            if (newValue != "" || newValue.isNotBlank()) {
+                                showClearText = true
+                                isFailure = false
+                                isSuccess = false
+                                if (newValue.length >= 6) {
+                                    isLoadingOtp = true
+                                    showClearText = false
+                                    controller?.hide()
+                                }
+                            }else{
+                                showClearText = false
+                            }
                         },
                     )
-                    Image(
-                        painter = painterResource(R.drawable.ic_cross),
-                        contentDescription = "Remove Otp",
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(999.dp))
-                            .clickable(true, onClick = {
-                                otpValue = ""
-                                print("test")
-                            })
-                    )
+
+                    OtpStatusIcon(
+                        showClearText = showClearText,
+                        isSuccess = isSuccess,
+                        isFailure = isFailure
+                    ) {
+                        viewModel.clearOtp()
+                    }
                 }
             }
 
@@ -119,18 +180,87 @@ fun OTPScreen() {
                 RAText("Didn't receive it?")
                 Spacer(modifier = Modifier.height(14.dp))
                 CountdownTimer()
-                Spacer(modifier = Modifier.height(30.dp))
+                Spacer(modifier = Modifier.height(26.dp))
             }
         }
     }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun OtpStatusIcon(
+    showClearText: Boolean,
+    isSuccess: Boolean,
+    isFailure: Boolean,
+    onClear: () -> Unit
+) {
+    // Decide the current "state"
+    val state = when {
+        showClearText && (!isSuccess && !isFailure) -> "clear"
+        isSuccess -> "success"
+        isFailure -> "failure"
+        else -> "none"
+    }
+
+    AnimatedContent(
+        targetState = state,
+        transitionSpec = {
+            slideInHorizontally(
+                initialOffsetX = { fullWidth -> fullWidth },
+                animationSpec = tween(150)
+            ) with slideOutHorizontally(
+                targetOffsetX = { fullWidth -> -fullWidth },
+                animationSpec = tween(150)
+            )
+        },
+        label = "OtpStateAnimation"
+    ) { target ->
+        when (target) {
+            "clear" -> {
+                Image(
+                    painter = painterResource(R.drawable.ic_cross),
+                    contentDescription = "Remove Otp",
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(999.dp))
+                        .size(32.dp)
+                        .clickable { onClear() }
+                )
+            }
+            "success" -> {
+                Icon(
+                    imageVector = Icons.Filled.CheckCircle,
+                    contentDescription = "Otp Success",
+                    tint = RAColor.Primary,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(999.dp))
+                        .size(32.dp)
+                        .clickable { onClear() }
+                )
+            }
+            "failure" -> {
+                Icon(
+                    imageVector = Icons.Filled.Warning,
+                    contentDescription = "Otp Failure",
+                    tint = Color.Red,
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(999.dp))
+                        .size(32.dp)
+                        .clickable { onClear() }
+                )
+            }
+        }
+    }
+
 }
 
 @SuppressLint("DefaultLocale")
 @Composable
 fun CountdownTimer() {
     var timeLeft by remember { mutableIntStateOf(60) }
+    var restartKey by remember { mutableIntStateOf(0) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(restartKey) {
+        timeLeft = 60
         while (timeLeft > 0) {
             delay(1000L)
             timeLeft--
@@ -141,7 +271,16 @@ fun CountdownTimer() {
     val seconds = timeLeft % 60
     val timeText = String.format("%02d:%02d", minutes, seconds)
 
-    RAText("Request the code here $timeText", variant = RATextVariant.BodyBold, color = RAColor.Grey)
+    RAText(
+        if (timeLeft == 0) "Request the code here" else "Request the code here $timeText",
+        variant = RATextVariant.BodyBold,
+        color = if (timeLeft == 0) RAColor.Primary else RAColor.Grey,
+        modifier = Modifier.clickable(timeLeft == 0, onClick = {
+            if (timeLeft == 0) {
+                restartKey++
+            }
+        })
+    )
 }
 
 @Composable
