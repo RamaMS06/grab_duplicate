@@ -1,5 +1,8 @@
 ## [Development]
 
+# 0.0.2
+- Bugfix OTPScreen with Icon Animation Handler
+
 # 0.0.1
 - Create SplashScreen
 - Create LoginScreen

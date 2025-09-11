@@ -62,7 +62,7 @@ fun AppNavHost(navController: NavHostController, startDestination: String = Rout
             LoginScreen(navController)
         }
         composable(Routes.Otp){
-            OTPScreen()
+            OTPScreen(navController)
         }
     }
 }
