@@ -85,22 +85,22 @@ fun OTPScreen(navController: NavHostController, viewModel: OtpViewModel = viewMo
         ) {
             val otpValue by viewModel.otpValue.collectAsState()
             val controller = LocalSoftwareKeyboardController.current
-            var isLoadingOtp by remember { mutableStateOf(false) }
-            var isFailure by remember { mutableStateOf(false) }
-            var isSuccess by remember { mutableStateOf(false) }
-            var showClearText by remember { mutableStateOf(false) }
+            val isLoadingOtp by viewModel.isLoadingOtp.collectAsState()
+            val isFailure by viewModel.isFailure.collectAsState()
+            val isSuccess by viewModel.isSuccess.collectAsState()
+            val showClearText by viewModel.showClearText.collectAsState()
 
             // Handling Logic
             LaunchedEffect(isLoadingOtp) {
                 delay(1500)
-                isLoadingOtp = false
+                viewModel.setIsLoadingOtp(false)
                 if (otpValue != "") {
                     if (otpValue != "123123") {
-                        isFailure = true
+                        viewModel.setFailure(false)
                         viewModel.setOtpValue("")
                         controller?.show()
                     } else {
-                        isSuccess = true
+                        viewModel.setSuccess(true)
                     }
                 }
             }
@@ -148,16 +148,12 @@ fun OTPScreen(navController: NavHostController, viewModel: OtpViewModel = viewMo
                         onValueChange = { newValue ->
                             viewModel.setOtpValue(newValue)
                             if (newValue != "" || newValue.isNotBlank()) {
-                                showClearText = true
-                                isFailure = false
-                                isSuccess = false
+                                viewModel.setFailure(false)
+                                viewModel.setSuccess(false)
                                 if (newValue.length >= 6) {
-                                    isLoadingOtp = true
-                                    showClearText = false
+                                    viewModel.setIsLoadingOtp(true)
                                     controller?.hide()
                                 }
-                            }else{
-                                showClearText = false
                             }
                         },
                     )

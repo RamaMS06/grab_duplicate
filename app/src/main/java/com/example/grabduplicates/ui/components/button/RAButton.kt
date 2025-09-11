@@ -93,7 +93,7 @@ fun RAButton(
     val isPressed by interaction.collectIsPressedAsState()
 
     val density = LocalDensity.current
-    val pressDyPx = with(density) { 2.dp.toPx() }
+    val pressDyPx = with(density) { 1.dp.toPx() }
 
     val translateY by animateFloatAsState(
         targetValue = if (isPressed && enabled && !loading) pressDyPx else 0f,
