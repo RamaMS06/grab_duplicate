@@ -115,7 +115,7 @@ fun LoginScreen(navController: NavHostController) {
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth(0.9f)
-                    .padding(bottom = h * 0.05f)
+                    .padding(bottom = h * 0.03f)
                     .navigationBarsPadding()
                     .graphicsLayer {
                         translationY = waveAnim
