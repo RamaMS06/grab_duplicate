@@ -13,7 +13,7 @@ import com.example.grabduplicates.ui.screen.otp.OTPScreen
 import com.example.grabduplicates.ui.screen.splash.SplashScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController, startDestination: String = Routes.Otp){
+fun AppNavHost(navController: NavHostController, startDestination: String = Routes.Splash){
     NavHost(navController = navController, startDestination = startDestination
     , enterTransition = {
             slideIntoContainer(

@@ -9,6 +9,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -96,7 +97,7 @@ fun OTPScreen(navController: NavHostController, viewModel: OtpViewModel = viewMo
                 viewModel.setIsLoadingOtp(false)
                 if (otpValue != "") {
                     if (otpValue != "123123") {
-                        viewModel.setFailure(false)
+                        viewModel.setFailure(true)
                         viewModel.setOtpValue("")
                         controller?.show()
                     } else {
@@ -107,7 +108,7 @@ fun OTPScreen(navController: NavHostController, viewModel: OtpViewModel = viewMo
 
             LaunchedEffect(isSuccess) {
                 delay(1000)
-                if(isSuccess){
+                if (isSuccess) {
                     navController.navigate(Routes.Splash) {
                         popUpTo(Routes.Splash) {
                             inclusive = true
@@ -204,9 +205,11 @@ fun OtpStatusIcon(
             slideInHorizontally(
                 initialOffsetX = { fullWidth -> fullWidth },
                 animationSpec = tween(150)
-            ) with slideOutHorizontally(
-                targetOffsetX = { fullWidth -> -fullWidth },
-                animationSpec = tween(150)
+            ).togetherWith(
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(150)
+                )
             )
         },
         label = "OtpStateAnimation"
@@ -222,6 +225,7 @@ fun OtpStatusIcon(
                         .clickable { onClear() }
                 )
             }
+
             "success" -> {
                 Icon(
                     imageVector = Icons.Filled.CheckCircle,
@@ -233,6 +237,7 @@ fun OtpStatusIcon(
                         .clickable { onClear() }
                 )
             }
+
             "failure" -> {
                 Icon(
                     imageVector = Icons.Filled.Warning,
