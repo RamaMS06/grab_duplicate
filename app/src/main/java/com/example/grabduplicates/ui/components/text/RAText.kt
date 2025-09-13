@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
  */
 enum class RATextVariant {
     H1, H2, H3, H4, H5,
-    BodyBold, Body, BodySmall
+    BodyBold, BodySemiBold, Body, BodySmall, BodyXSmall
 }
 
 /**
@@ -43,8 +43,10 @@ fun RAText(
         RATextVariant.H4 -> RAFont.h4
         RATextVariant.H5 -> RAFont.h5
         RATextVariant.BodyBold -> RAFont.bodyBold
+        RATextVariant.BodySemiBold -> RAFont.bodySemiBold
         RATextVariant.Body -> RAFont.body
         RATextVariant.BodySmall -> RAFont.bodySmall
+        RATextVariant.BodyXSmall -> RAFont.bodyXSmall
     }
 
     val finalStyle = if (styleOverride != null) base.merge(styleOverride) else base

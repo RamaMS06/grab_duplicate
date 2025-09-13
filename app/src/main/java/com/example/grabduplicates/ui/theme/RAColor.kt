@@ -14,6 +14,8 @@ object RAColor{
 
     val WhiteDarker = Color(0xFFfafafa)
 
+    val Dark = Color(0xFF676767)
+
     val Grey = Color(0xFFC5C5C5)
 
     val Purple40 = Color(0xFF6650a4)

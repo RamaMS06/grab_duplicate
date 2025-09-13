@@ -109,7 +109,7 @@ fun RAButton(
     val containerColor =
         when (variant) {
             RAButtonVariant.Filled ->
-                if (!enabled) RAButtonDefaults.FilledDisabledContainer
+                if (!enabled) RAColor.Grey
                 else if (isPressed) RAColor.PrimaryDarker
                 else RAButtonDefaults.FilledContainer
 
