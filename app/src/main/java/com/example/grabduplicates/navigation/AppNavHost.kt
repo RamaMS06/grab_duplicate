@@ -9,13 +9,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
+import com.example.grabduplicates.ui.screen.home.HomeScreen
 import com.example.grabduplicates.ui.screen.otp.OTPScreen
+import com.example.grabduplicates.ui.screen.phone.PhoneScreen
 import com.example.grabduplicates.ui.screen.splash.SplashScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController, startDestination: String = Routes.Splash){
-    NavHost(navController = navController, startDestination = startDestination
-    , enterTransition = {
+fun AppNavHost(navController: NavHostController, startDestination: String = Routes.Splash) {
+    NavHost(
+        navController = navController, startDestination = startDestination, enterTransition = {
             slideIntoContainer(
                 towards = SlideDirection.Left,
                 animationSpec = tween(400)
@@ -39,30 +41,48 @@ fun AppNavHost(navController: NavHostController, startDestination: String = Rout
                 animationSpec = tween(400)
             )
         }
-    ){
+    ) {
 
         composable(Routes.Splash, enterTransition = {
             EnterTransition.None
         }, exitTransition = {
             ExitTransition.None
-        }){
+        }) {
             SplashScreen {
-                navController.navigate(Routes.Login){
+                navController.navigate(Routes.Login) {
                     popUpTo(Routes.Splash) {
                         inclusive = true
                     }
                 }
             }
         }
-        composable(Routes.Login, enterTransition = {
-            EnterTransition.None
-        }, exitTransition = {
-            ExitTransition.None
-        }){
+        composable(
+            Routes.Login,
+            enterTransition = {
+                EnterTransition.None
+            },
+            exitTransition = {
+                ExitTransition.None
+            },
+        ) {
             LoginScreen(navController)
         }
-        composable(Routes.Otp){
+
+        composable(Routes.Otp) {
             OTPScreen(navController)
         }
+
+        composable(
+            Routes.Phone
+        ){
+            PhoneScreen(navController)
+        }
+
+        composable(
+            Routes.Home
+        ){
+            HomeScreen(navController)
+        }
+
     }
 }

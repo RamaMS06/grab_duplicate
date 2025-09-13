@@ -77,6 +77,14 @@ object RAFont {
         letterSpacing = 0.sp
     )
 
+    val bodySemiBold = TextStyle(
+        fontFamily = SanomatSans,
+        fontWeight = FontWeight.W500,
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+        letterSpacing = 0.sp
+    )
+
     val body = TextStyle(
         fontFamily = SanomatSans,
         fontWeight = FontWeight.Normal,
@@ -86,6 +94,14 @@ object RAFont {
     )
 
     val bodySmall = TextStyle(
+        fontFamily = SanomatSans,
+        fontWeight = FontWeight.Normal,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.sp
+    )
+
+    val bodyXSmall = TextStyle(
         fontFamily = SanomatSans,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp,

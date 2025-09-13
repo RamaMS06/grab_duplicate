@@ -2,15 +2,12 @@ package com.example.grabduplicates.ui.screen.otp
 
 import RAText
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -47,7 +44,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -82,7 +78,6 @@ fun OTPScreen(navController: NavHostController, viewModel: OtpViewModel = viewMo
                 .padding(innerPadding)
                 .padding(12.dp)
                 .fillMaxSize()
-                .background(color = RAColor.White)
         ) {
             val otpValue by viewModel.otpValue.collectAsState()
             val controller = LocalSoftwareKeyboardController.current
@@ -93,8 +88,10 @@ fun OTPScreen(navController: NavHostController, viewModel: OtpViewModel = viewMo
 
             // Handling Logic
             LaunchedEffect(isLoadingOtp) {
-                delay(1500)
-                viewModel.setIsLoadingOtp(false)
+                if (isLoadingOtp) {
+                    delay(1500)
+                    viewModel.setIsLoadingOtp(false)
+                }
                 if (otpValue != "") {
                     if (otpValue != "123123") {
                         viewModel.setFailure(true)
@@ -109,8 +106,8 @@ fun OTPScreen(navController: NavHostController, viewModel: OtpViewModel = viewMo
             LaunchedEffect(isSuccess) {
                 delay(1000)
                 if (isSuccess) {
-                    navController.navigate(Routes.Splash) {
-                        popUpTo(Routes.Splash) {
+                    navController.navigate(Routes.Phone) {
+                        popUpTo(Routes.Phone) {
                             inclusive = true
                         }
                         launchSingleTop = true
@@ -316,12 +313,12 @@ fun OtpTextField(
                 val filtered = raw.filter { it.isDigit() }.take(maxLength)
                 if (filtered != value) onValueChange(filtered)
             },
-            singleLine = true, // so IME shows Done, not newline
+            singleLine = true,
             textStyle = RAFont.h1,
             cursorBrush = SolidColor(cursorColor),
             visualTransformation = VisualTransformation.None,
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number, // numeric keypad
+                keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done,
                 autoCorrect = false
             ),
