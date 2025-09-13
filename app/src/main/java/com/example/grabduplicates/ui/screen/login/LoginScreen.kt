@@ -19,6 +19,11 @@ import androidx.navigation.NavHostController
 import com.example.grabduplicates.R
 import com.example.grabduplicates.navigation.Routes
 import com.example.grabduplicates.ui.theme.RAColor
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.foundation.layout.fillMaxWidth
+import com.ramams.wavify.*
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
@@ -87,6 +92,7 @@ fun LoginScreen(navController: NavHostController) {
             modifier = Modifier
                 .matchParentSize()
         ) {
+
             Image(
                 painter = painterResource(R.drawable.footer_login),
                 contentDescription = "Footer Illustration Login",
@@ -99,40 +105,54 @@ fun LoginScreen(navController: NavHostController) {
                 contentScale = ContentScale.FillWidth
             )
 
-            Image(
-                painter = painterResource(R.drawable.footer_wave),
-                contentDescription = "Footer Login Wave",
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .graphicsLayer {
-                        translationY = waveAnim
-                    },
-                contentScale = ContentScale.FillWidth
-            )
 
             Column(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .fillMaxWidth(0.9f)
-                    .padding(bottom = h * 0.03f)
+                    .padding(bottom = h * 0.01f)
                     .navigationBarsPadding()
                     .graphicsLayer {
                         translationY = waveAnim
                     }
                     .zIndex(1f),
                 horizontalAlignment = Alignment.CenterHorizontally
-            ){
+            ) {
                 RAButton(text = "Log In", variant = RAButtonVariant.Filled, onClick = {
-                    navController.navigate(Routes.Otp){
+                    navController.navigate(Routes.Otp) {
                         popUpTo(Routes.Otp) {
                             inclusive = true
                         }
                         launchSingleTop = true
                     }
                 })
-                RAButton(text = "New to Grab? Sign up!", modifier = Modifier.padding(top = 16.dp), variant = RAButtonVariant.Outline, onClick = {} )
+
+                RAButton(
+                    text = "New to Grab? Sign up!",
+                    modifier = Modifier.padding(top = 16.dp),
+                    variant = RAButtonVariant.Outline,
+                    onClick = {
+
+                    })
             }
+
+            Wavify(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .graphicsLayer {
+                        translationY = waveAnim
+                    },
+                height = 400.dp,
+                layers = listOf(
+                    WavifyLayer(
+                        amplitude = 60f,
+                        wavelengthFactor = 0.5f,
+                        speedMillis = 4000,
+                        color = RAColor.White
+                    ),
+
+                )
+            )
 
         }
     }
