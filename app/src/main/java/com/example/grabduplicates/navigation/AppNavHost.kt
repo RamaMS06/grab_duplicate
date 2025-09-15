@@ -10,12 +10,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.NavHostController
 import com.example.grabduplicates.ui.screen.home.HomeScreen
+import com.example.grabduplicates.ui.screen.navbar.NavBar
 import com.example.grabduplicates.ui.screen.otp.OTPScreen
 import com.example.grabduplicates.ui.screen.phone.PhoneScreen
 import com.example.grabduplicates.ui.screen.splash.SplashScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController, startDestination: String = Routes.Splash) {
+fun AppNavHost(navController: NavHostController, startDestination: String = Routes.Navbar) {
     NavHost(
         navController = navController, startDestination = startDestination, enterTransition = {
             slideIntoContainer(
@@ -42,7 +43,6 @@ fun AppNavHost(navController: NavHostController, startDestination: String = Rout
             )
         }
     ) {
-
         composable(Routes.Splash, enterTransition = {
             EnterTransition.None
         }, exitTransition = {
@@ -76,6 +76,10 @@ fun AppNavHost(navController: NavHostController, startDestination: String = Rout
             Routes.Phone
         ){
             PhoneScreen(navController)
+        }
+
+        composable(Routes.Navbar) {
+            NavBar(navController)
         }
 
         composable(

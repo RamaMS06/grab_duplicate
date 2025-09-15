@@ -18,6 +18,8 @@ animationCore = "1.9.1"
 ui = "1.9.1"
 foundation = "1.9.1"
 wavify = "1.0.1"
+animation = "1.9.1"
+uiGraphics = "1.9.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +46,8 @@ androidx-compose-animation-core = { group = "androidx.compose.animation", name =
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 wavify = { module = "com.github.RamaMS06:wavify", version.ref = "wavify" }
+androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "animation" }
+androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphics" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

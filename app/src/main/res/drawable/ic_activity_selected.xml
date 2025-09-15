@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="23dp"
+    android:height="22dp"
+    android:viewportWidth="23"
+    android:viewportHeight="22">
+
+  <!-- Filled document shape -->
+  <path
+      android:pathData="M5.5,1.5H4.5C2.976,1.5 2.129,2.081 1.739,2.579C1.54,2.832 1.5,3.163 1.5,3.486C1.5,4.996 1.5,7.713 1.5,9.5C1.5,11.5 4.5,11 5,11H5.5M5.5,1.5C9.5,1.5 17.9,1.5 19.5,1.5C21.1,1.5 21.5,2.5 21.5,3C21.5,7.833 21.5,17.8 21.5,19C21.5,20.2 20.5,20.5 20,20.5C16.167,20.5 8.2,20.5 7,20.5C5.8,20.5 5.5,19.5 5.5,19V11M5.5,1.5V11"
+      android:fillColor="#4CAF50"
+      android:strokeWidth="0"
+      android:strokeColor="#00000000"/>
+
+  <!-- White text lines inside -->
+  <path
+      android:pathData="M9,7H17.488"
+      android:strokeWidth="2"
+      android:strokeColor="#FFFFFF"
+      android:strokeLineCap="round"/>
+
+  <path
+      android:pathData="M9,11H17.696"
+      android:strokeWidth="2"
+      android:strokeColor="#FFFFFF"
+      android:strokeLineCap="round"/>
+
+  <path
+      android:pathData="M9,15H14.188"
+      android:strokeWidth="2"
+      android:strokeColor="#FFFFFF"
+      android:strokeLineCap="round"/>
+</vector>

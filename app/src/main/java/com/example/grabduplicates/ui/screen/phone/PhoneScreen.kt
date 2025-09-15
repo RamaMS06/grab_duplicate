@@ -68,8 +68,8 @@ fun PhoneScreen(navController: NavController, viewModel: PhoneViewModel = viewMo
                 viewModel.setLoadingPhone(false)
             }
             if (isSuccess) {
-                navController.navigate(Routes.Home) {
-                    popUpTo(Routes.Home) {
+                navController.navigate(Routes.Navbar) {
+                    popUpTo(Routes.Navbar) {
                         inclusive = true
                     }
                     launchSingleTop = true
