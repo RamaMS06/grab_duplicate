@@ -114,7 +114,6 @@ fun NavBar(navController: NavController) {
                 }
 
                 1 -> HomeScreen(navController)
-                2 -> TestScreen()
                 else -> Box(
                     Modifier
                         .fillMaxSize()
@@ -190,10 +189,4 @@ fun BottomNavBar(
             )
         }
     }
-}
-
-
-@Composable
-fun TestScreen() {
-    RAText("Test Screen")
 }
