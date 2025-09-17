@@ -12,11 +12,12 @@ import androidx.navigation.NavHostController
 import com.example.grabduplicates.ui.screen.home.HomeScreen
 import com.example.grabduplicates.ui.screen.navbar.NavBar
 import com.example.grabduplicates.ui.screen.otp.OTPScreen
+import com.example.grabduplicates.ui.screen.paymentQR.PaymentQRScreen
 import com.example.grabduplicates.ui.screen.phone.PhoneScreen
 import com.example.grabduplicates.ui.screen.splash.SplashScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController, startDestination: String = Routes.Navbar) {
+fun AppNavHost(navController: NavHostController, startDestination: String = Routes.PaymentQR) {
     NavHost(
         navController = navController, startDestination = startDestination, enterTransition = {
             slideIntoContainer(
@@ -80,6 +81,10 @@ fun AppNavHost(navController: NavHostController, startDestination: String = Rout
 
         composable(Routes.Navbar) {
             NavBar(navController)
+        }
+
+        composable(Routes.PaymentQR) {
+            PaymentQRScreen(navController)
         }
 
         composable(

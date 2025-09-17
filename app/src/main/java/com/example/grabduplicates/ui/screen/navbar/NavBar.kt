@@ -3,7 +3,6 @@
 package com.example.grabduplicates.ui.screen.navbar
 
 import RAFont
-import RAText
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.activity.compose.BackHandler
@@ -40,6 +39,7 @@ import com.example.grabduplicates.R
 import com.example.grabduplicates.navigation.Routes
 import com.example.grabduplicates.state.AppState
 import com.example.grabduplicates.ui.screen.home.HomeScreen
+import com.example.grabduplicates.ui.screen.paymentQR.PaymentQRScreen
 import com.example.grabduplicates.ui.theme.RAColor
 import com.example.grabduplicates.util.capitalizeFirst
 import kotlinx.coroutines.CoroutineScope
@@ -103,16 +103,8 @@ fun NavBar(navController: NavController) {
         ) { page ->
             when (page) {
                 0 -> {
-                    Box(
-                        Modifier
-                            .fillMaxSize()
-                            .background(RAColor.Grey),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        RAText("Hidden Page")
-                    }
+                    PaymentQRScreen(navController)
                 }
-
                 1 -> HomeScreen(navController)
                 else -> Box(
                     Modifier
