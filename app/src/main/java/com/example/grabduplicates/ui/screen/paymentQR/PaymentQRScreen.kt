@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -148,7 +149,7 @@ fun PaymentQRScreen(navController: NavController) {
                 CardPayment(img = item.img, label = item.label)
                 Spacer(Modifier.height(16.dp))
             }
-            Spacer(Modifier.height(38.dp))
+            Spacer(Modifier.height(28.dp))
             RAText(
                 "Where can I use GrabPay?",
                 modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -170,7 +171,8 @@ fun PaymentQRScreen(navController: NavController) {
                     index + 1,
                     data.label,
                     data.desc,
-                    data.img
+                    data.img,
+                    index == listDataPayMerchant.lastIndex
                 )
             }
         }
@@ -203,7 +205,7 @@ fun CardStepPayment(
     img: Int? = null,
     isLast: Boolean = false
 ) {
-    Row {
+    Row(modifier = Modifier.height(IntrinsicSize.Max)) {
         Column(
             modifier = Modifier.fillMaxHeight(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -229,8 +231,8 @@ fun CardStepPayment(
                     color = Color(0xFF00A86B),
                     thickness = 3.dp,
                     modifier = Modifier
-                        .weight(1f)
-                        .padding(top = 4.dp)
+                        .fillMaxHeight()
+                        .padding(vertical = 8.dp)
                 )
             }
         }
@@ -271,7 +273,6 @@ fun VerticalDashedDivider(
     thickness: Dp = 1.dp,
     dashLength: Dp = 1.dp,
     gapLength: Dp = 9.dp,
-    height: Dp = 48.dp // default height; or use Modifier.height(...) outside
 ) {
     val density = LocalDensity.current
     val strokePx = with(density) { thickness.toPx() }
@@ -285,7 +286,6 @@ fun VerticalDashedDivider(
     Box(
         modifier = modifier
             .width(thickness)
-            .height(height)
             .drawBehind {
                 val x = size.width / 2f
                 drawLine(

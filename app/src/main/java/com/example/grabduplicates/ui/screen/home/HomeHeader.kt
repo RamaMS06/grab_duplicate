@@ -1,7 +1,6 @@
 package com.example.grabduplicates.ui.screen.home
 
 import RAText
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
@@ -10,8 +9,11 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +25,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.TextField
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,14 +38,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.example.grabduplicates.R
 import com.example.grabduplicates.ui.theme.RAColor
-import com.example.grabduplicates.util.clearFocusOnKeyboardDismiss
 import com.example.grabduplicates.util.dropShadow
 import kotlinx.coroutines.delay
 
@@ -83,6 +88,10 @@ fun SearchTextField(
 
     var currentIndex by remember { mutableIntStateOf(0) }
     val roundCorner = 10.dp
+    val focusRequester = remember {
+        FocusRequester()
+    }
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(Unit) {
         while (true) {
@@ -98,6 +107,7 @@ fun SearchTextField(
         textStyle = RAFont.body,
         cursorBrush = SolidColor(RAColor.Dark),
         modifier = modifier
+            .focusRequester(focusRequester)
             .dropShadow(
                 shape = RoundedCornerShape(roundCorner),
                 color = RAColor.Dark.copy(alpha = 0.05f),
@@ -110,6 +120,14 @@ fun SearchTextField(
             .background(RAColor.White)
             .fillMaxWidth()
             .height(54.dp),
+        keyboardOptions = KeyboardOptions(
+            imeAction = ImeAction.Done
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusManager.clearFocus()
+            }
+        ),
         decorationBox = { innerTextField ->
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -117,6 +135,8 @@ fun SearchTextField(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 16.dp)
+                    .height(IntrinsicSize.Max)
+                    .width(IntrinsicSize.Max)
             ) {
                 Image(
                     painter = painterResource(R.drawable.ic_search),
@@ -127,6 +147,7 @@ fun SearchTextField(
                     contentAlignment = Alignment.CenterStart,
                     modifier = Modifier.weight(1f)
                 ) {
+                    innerTextField()
                     if (value.isEmpty()) {
                         AnimatedContent(
                             targetState = currentIndex,
@@ -145,7 +166,6 @@ fun SearchTextField(
                                 color = RAColor.Grey)
                         }
                     }
-                    innerTextField()
                 }
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
