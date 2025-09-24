@@ -4,7 +4,6 @@ package com.example.grabduplicates.ui.screen.navbar
 
 import RAFont
 import android.annotation.SuppressLint
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -75,8 +74,6 @@ fun NavBar(navController: NavController) {
 
     LaunchedEffect(pagerState.currentPage - 1) {
         selectedItem = pagerState.currentPage - 1
-
-        Log.d("Selected", selectedItem.toString())
 
         if (pagerState.currentPage == 0) {
             AppState.tooltipVisible = false

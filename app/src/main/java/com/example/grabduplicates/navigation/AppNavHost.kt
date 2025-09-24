@@ -17,7 +17,7 @@ import com.example.grabduplicates.ui.screen.phone.PhoneScreen
 import com.example.grabduplicates.ui.screen.splash.SplashScreen
 
 @Composable
-fun AppNavHost(navController: NavHostController, startDestination: String = Routes.Home) {
+fun AppNavHost(navController: NavHostController, startDestination: String = Routes.Navbar) {
     NavHost(
         navController = navController, startDestination = startDestination, enterTransition = {
             slideIntoContainer(
