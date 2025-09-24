@@ -11,6 +11,8 @@ object Routes {
 
     const val Navbar = "navbar"
 
+    const val PaymentQR = "paymentQR"
+
     const val Home = "home"
 
     const val Activity = "activity"

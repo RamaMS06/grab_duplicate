@@ -124,7 +124,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = viewMode
                 Spacer(Modifier.height(38.dp))
 
                 RAText(
-                    "Celebrate Mid-Autmnm Festival",
+                    "Celebrate Mid-Autumn Festival",
                     variant = RATextVariant.H5,
                     modifier = Modifier.padding(horizontal = 12.dp)
                 )
