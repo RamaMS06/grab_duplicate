@@ -37,6 +37,7 @@ import androidx.navigation.NavController
 import com.example.grabduplicates.R
 import com.example.grabduplicates.navigation.Routes
 import com.example.grabduplicates.state.AppState
+import com.example.grabduplicates.ui.screen.activity.ActivityScreen
 import com.example.grabduplicates.ui.screen.home.HomeScreen
 import com.example.grabduplicates.ui.screen.paymentQR.PaymentQRScreen
 import com.example.grabduplicates.ui.theme.RAColor
@@ -96,13 +97,14 @@ fun NavBar(navController: NavController) {
         HorizontalPager(
             pagerState,
             modifier = Modifier.fillMaxSize(),
-            beyondViewportPageCount = 2
+            beyondViewportPageCount = 2,
         ) { page ->
             when (page) {
                 0 -> {
                     PaymentQRScreen(navController)
                 }
                 1 -> HomeScreen(navController)
+                2 -> ActivityScreen(navController)
                 else -> Box(
                     Modifier
                         .fillMaxSize()
